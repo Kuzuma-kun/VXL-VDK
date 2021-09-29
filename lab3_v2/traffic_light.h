@@ -32,4 +32,8 @@ void run_traffic_light_timer();
 void update_time_traffic_light();
 void display_traffic_light();
 
+void toggleRedLight();
+void toggleAmberLight();
+void toggleGreenLight();
+
 #endif /* INC_TRAFFIC_LIGHT_H_ */

@@ -16,10 +16,11 @@ int red_duration = 5;
 int amber_duration = 2;
 int green_duration = 3;
 
+
 int time_traffic_light[NO_OF_ROAD];
 enum State_Traffic_Light state_traffic_light[NO_OF_ROAD];
 static int trafficLightPin[NO_OF_ROAD][3] = {{0x0002, 0x0004, 0x0008},{0x0010, 0x0020, 0x0040}};
-
+static int toggleCounter = 1;
 
 void init_traffic_light() {
 	time_traffic_light[0] = red_duration;
@@ -89,4 +90,44 @@ void update_time_traffic_light() {
 	updateBuffer(time_traffic_light[0], time_traffic_light[1]);
 }
 
+void toggleRedLight() {
+	for(int i = 0; i < NO_OF_ROAD; i++) {
+		if (toggleCounter == 1){
+			HAL_GPIO_WritePin(PORT_TRAFFIC_LIGHT, trafficLightPin[i][0], TRAFFIC_LIGHT_ENABLE);
+		} else {
+			HAL_GPIO_WritePin(PORT_TRAFFIC_LIGHT, trafficLightPin[i][0], TRAFFIC_LIGHT_DISABLE);
+		}
+		HAL_GPIO_WritePin(PORT_TRAFFIC_LIGHT, trafficLightPin[i][1] | trafficLightPin[i][2]
+																	, TRAFFIC_LIGHT_DISABLE);
+	}
+	toggleCounter--;
+	if (toggleCounter < 0) toggleCounter = 1;
+}
 
+void toggleAmberLight() {
+	for(int i = 0; i < NO_OF_ROAD; i++) {
+		if (toggleCounter == 1){
+			HAL_GPIO_WritePin(PORT_TRAFFIC_LIGHT, trafficLightPin[i][1], TRAFFIC_LIGHT_ENABLE);
+		} else {
+			HAL_GPIO_WritePin(PORT_TRAFFIC_LIGHT, trafficLightPin[i][1], TRAFFIC_LIGHT_DISABLE);
+		}
+		HAL_GPIO_WritePin(PORT_TRAFFIC_LIGHT, trafficLightPin[i][0] | trafficLightPin[i][2]
+																	, TRAFFIC_LIGHT_DISABLE);
+	}
+	toggleCounter--;
+	if (toggleCounter < 0) toggleCounter = 1;
+}
+
+void toggleGreenLight() {
+	for(int i = 0; i < NO_OF_ROAD; i++) {
+		if (toggleCounter == 1){
+			HAL_GPIO_WritePin(PORT_TRAFFIC_LIGHT, trafficLightPin[i][2], TRAFFIC_LIGHT_ENABLE);
+		} else {
+			HAL_GPIO_WritePin(PORT_TRAFFIC_LIGHT, trafficLightPin[i][2], TRAFFIC_LIGHT_DISABLE);
+		}
+		HAL_GPIO_WritePin(PORT_TRAFFIC_LIGHT, trafficLightPin[i][1] | trafficLightPin[i][0]
+																	, TRAFFIC_LIGHT_DISABLE);
+	}
+	toggleCounter--;
+	if (toggleCounter < 0) toggleCounter = 1;
+}

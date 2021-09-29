@@ -24,7 +24,7 @@ uint8_t shiftAmountForEnable7seg = 0xff;
 //32bit, 16low bit, with bit 1 decide to set that pin to low.
 //16high bit, with bit 1 decide to set that pin to high.
 //if bit 0, ignore (don't do anything)
-void display7SEG(int value) {
+void display7SEGs(int value) {
 	int temp = dataDisplay[value];
 	//if shiftAmountForSegment is not specified, do once, and use forever.
 	if (shiftAmountForSegment == 0xff) {
@@ -43,14 +43,14 @@ void display7SEG(int value) {
 	}
 }
 
-void updateBuffer(int value1, int value2, int value3, int value4) {
+void updateBuffers(int value1, int value2, int value3, int value4) {
 	LedBuffer[0] = value1;
 	LedBuffer[1] = value2;
 	LedBuffer[2] = value3;
 	LedBuffer[3] = value4;
 }
 
-void scanLED() {
+void scanLEDs() {
 	if (currentLED >= NO_OF_7SEG) {
 		currentLED = 0;
 	}
@@ -76,7 +76,7 @@ void scanLED() {
 		PORT_FOR_ENALBE->BRR = temp << shiftAmountForEnable7seg;
 	}
 	//sau do cap nhat gia tri moi
-	display7SEG(LedBuffer[currentLED]);
+	display7SEGs(LedBuffer[currentLED]);
 	//sau do bat den len
 	temp = 0x0001;
 	if (TURN_ON_7SEG == GPIO_PIN_RESET) {

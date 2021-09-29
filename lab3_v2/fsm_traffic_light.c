@@ -28,15 +28,31 @@ void fsm_traffic_light() {
 		if (getButtonValue(0) == PRESS && getFlagButtonDelay(0) == 0) {
 			mode = CHANGE_AMBER;
 			setFlagButtonDelay(0);
+			blinkingCounter = 25;
 		}
-		updateBuffer(0, 02);
+		updateBuffer(red_duration, 02);
+		if (blinkingCounter == 25) {
+			toggleRedLight();
+		}
+		blinkingCounter--;
+		if (blinkingCounter <= 0) {
+			blinkingCounter = 25;
+		}
 		break;
 	case CHANGE_AMBER:
 		if (getButtonValue(0) == PRESS && getFlagButtonDelay(0) == 0) {
 			mode = CHANGE_GREEN;
 			setFlagButtonDelay(0);
+			blinkingCounter = 25;
 		}
-		updateBuffer(0, 03);
+		updateBuffer(amber_duration, 03);
+		if (blinkingCounter == 25) {
+			toggleAmberLight();
+		}
+		blinkingCounter--;
+		if (blinkingCounter <= 0) {
+			blinkingCounter = 25;
+		}
 		break;
 	case CHANGE_GREEN:
 		if (getButtonValue(0) == PRESS && getFlagButtonDelay(0) == 0) {
@@ -44,7 +60,14 @@ void fsm_traffic_light() {
 			setFlagButtonDelay(0);
 			init_traffic_light();
 		}
-		updateBuffer(0, 04);
+		updateBuffer(green_duration, 04);
+		if (blinkingCounter == 25) {
+			toggleGreenLight();
+		}
+		blinkingCounter--;
+		if (blinkingCounter <= 0) {
+			blinkingCounter = 25;
+		}
 		break;
 	}
 
