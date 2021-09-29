@@ -115,6 +115,10 @@ void fsm_traffic_light() {
 		}
 		fsm_increase_mode(&tempDuration);
 		updateBuffer(tempDuration, 04);
+		if (getButtonValue(1) == RELEASE && getButtonValue(2) == PRESS) {
+			green_duration = tempDuration;
+			updateBuffer(tempDuration, 88);
+		}
 		//these are used to blink the led
 		if (blinkingCounter == 25) {
 			toggleGreenLight();
