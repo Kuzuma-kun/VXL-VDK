@@ -78,8 +78,8 @@ void Error_Handler(void);
 #define SEG0_1_GPIO_Port GPIOB
 #define SEG0_2_Pin GPIO_PIN_2
 #define SEG0_2_GPIO_Port GPIOB
-#define ROAD2_1_Pin GPIO_PIN_10
-#define ROAD2_1_GPIO_Port GPIOB
+#define ROAD1_0_Pin GPIO_PIN_10
+#define ROAD1_0_GPIO_Port GPIOB
 #define BUTTON1_Pin GPIO_PIN_8
 #define BUTTON1_GPIO_Port GPIOA
 #define BUTTON2_Pin GPIO_PIN_9
@@ -92,8 +92,8 @@ void Error_Handler(void);
 #define SEG0_5_GPIO_Port GPIOB
 #define SEG0_6_Pin GPIO_PIN_6
 #define SEG0_6_GPIO_Port GPIOB
-#define ROAD1_0_Pin GPIO_PIN_7
-#define ROAD1_0_GPIO_Port GPIOB
+#define ROAD1_0B7_Pin GPIO_PIN_7
+#define ROAD1_0B7_GPIO_Port GPIOB
 #define ROAD1_1_Pin GPIO_PIN_8
 #define ROAD1_1_GPIO_Port GPIOB
 #define ROAD2_0_Pin GPIO_PIN_9

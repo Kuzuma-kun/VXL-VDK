@@ -22,11 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "timer.h"
-#include "input_reading.h"
-//#include "led7_display.h"
-#include "7_seg_display.h"
-#include "traffic_light.h"
+#include "fsm_traffic_light.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -99,7 +95,7 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   initTimer(0);
-  setTimer(1,1000);
+  init_traffic_light();
   initTimer(2);
   while (1)
   {
@@ -108,14 +104,9 @@ int main(void)
 		 setTimer(2, 100);
 	 }
 	 if (getTimerFlag(0) == 1) {
-		 update_time_traffic_light();
-		 display_traffic_light();
+		 read_button();
+		 fsm_traffic_light();
 		 setTimer(0, 10);
-	 }
-	 if (getTimerFlag(1) == 1) {
-		 run_traffic_light();
-		 setTimer(1, 1000);
-		 //HAL_GPIO_TogglePin(GPIOA, 0x0002);
 	 }
     /* USER CODE END WHILE */
 
@@ -258,7 +249,7 @@ static void MX_GPIO_Init(void)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	timer_run(0);
-	timer_run(1);
+	run_traffic_light_timer();
 	timer_run(2);
 }
 /* USER CODE END 4 */

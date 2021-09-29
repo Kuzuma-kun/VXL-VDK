@@ -5,7 +5,6 @@
  *      Author: ngocc
  */
 
-#include "main.h"
 #include "input_reading.h"
 
 

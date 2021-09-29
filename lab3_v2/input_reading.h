@@ -8,6 +8,7 @@
 #ifndef INC_INPUT_READING_H_
 #define INC_INPUT_READING_H_
 
+#include "main.h"
 //if change NO_OF_BUTTON, go to input_reading and change pinValue + buttonBuffer
 #define NO_OF_BUTTON 		3
 //wait time until debouncing
