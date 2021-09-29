@@ -12,7 +12,7 @@ static int timer_counter[NO_OF_TIMER];
 void setTimer(int num_of_timer, int duration) {
 	if (num_of_timer >= NO_OF_TIMER) return;
 	timer_counter[num_of_timer] = duration / TIMER_CYCLE;
-	timer_counter[num_of_timer] = 0;
+	timer_flag[num_of_timer] = 0;
 }
 
 void initTimer(int num_of_timer) {

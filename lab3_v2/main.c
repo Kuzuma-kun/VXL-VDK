@@ -24,6 +24,9 @@
 /* USER CODE BEGIN Includes */
 #include "timer.h"
 #include "input_reading.h"
+//#include "led7_display.h"
+#include "7_seg_display.h"
+#include "traffic_light.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -96,29 +99,26 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   initTimer(0);
+  setTimer(1,1000);
+  initTimer(2);
   while (1)
   {
-
+	 if (getTimerFlag(2) == 1) {
+		 scanLED();
+		 setTimer(2, 100);
+	 }
+	 if (getTimerFlag(0) == 1) {
+		 update_time_traffic_light();
+		 display_traffic_light();
+		 setTimer(0, 10);
+	 }
+	 if (getTimerFlag(1) == 1) {
+		 run_traffic_light();
+		 setTimer(1, 1000);
+		 //HAL_GPIO_TogglePin(GPIOA, 0x0002);
+	 }
     /* USER CODE END WHILE */
-	  if (getTimerFlag(0) == 1) {
-		  read_button();
-		  if (getButtonValue(0) == PRESS) {
-			  HAL_GPIO_WritePin(GPIOA, RED0_Pin, GPIO_PIN_RESET);
-		  } else {
-			  HAL_GPIO_WritePin(GPIOA, RED0_Pin, GPIO_PIN_SET);
-		  }
-		  if (getButtonValue(1) == PRESS) {
-			  HAL_GPIO_WritePin(GPIOA, YELLOW0_Pin, GPIO_PIN_RESET);
-		  } else {
-			  HAL_GPIO_WritePin(GPIOA, YELLOW0_Pin, GPIO_PIN_SET);
-		  }
-		  if (getButtonValue(2) == PRESS) {
-			  HAL_GPIO_WritePin(GPIOA, GREEN0_Pin, GPIO_PIN_RESET);
-		  } else {
-			  HAL_GPIO_WritePin(GPIOA, GREEN0_Pin, GPIO_PIN_SET);
-		  }
-		  setTimer(0, 10);
-	  }
+
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -214,7 +214,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
@@ -223,9 +222,9 @@ static void MX_GPIO_Init(void)
                           |YELLOW1_Pin|GREEN1_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, SEG0_0_Pin|SEG0_1_Pin|SEG0_2_Pin|ROAD2_1_Pin
+  HAL_GPIO_WritePin(GPIOB, SEG0_0_Pin|SEG0_1_Pin|SEG0_2_Pin|ROAD1_0_Pin
                           |SEG0_3_Pin|SEG0_4_Pin|SEG0_5_Pin|SEG0_6_Pin
-                          |ROAD1_0_Pin|ROAD1_1_Pin|ROAD2_0_Pin, GPIO_PIN_RESET);
+                          |ROAD1_0B7_Pin|ROAD1_1_Pin|ROAD2_0_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : RED0_Pin YELLOW0_Pin GREEN0_Pin RED1_Pin
                            YELLOW1_Pin GREEN1_Pin */
@@ -242,12 +241,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : SEG0_0_Pin SEG0_1_Pin SEG0_2_Pin ROAD2_1_Pin
+  /*Configure GPIO pins : SEG0_0_Pin SEG0_1_Pin SEG0_2_Pin ROAD1_0_Pin
                            SEG0_3_Pin SEG0_4_Pin SEG0_5_Pin SEG0_6_Pin
-                           ROAD1_0_Pin ROAD1_1_Pin ROAD2_0_Pin */
-  GPIO_InitStruct.Pin = SEG0_0_Pin|SEG0_1_Pin|SEG0_2_Pin|ROAD2_1_Pin
+                           ROAD1_0B7_Pin ROAD1_1_Pin ROAD2_0_Pin */
+  GPIO_InitStruct.Pin = SEG0_0_Pin|SEG0_1_Pin|SEG0_2_Pin|ROAD1_0_Pin
                           |SEG0_3_Pin|SEG0_4_Pin|SEG0_5_Pin|SEG0_6_Pin
-                          |ROAD1_0_Pin|ROAD1_1_Pin|ROAD2_0_Pin;
+                          |ROAD1_0B7_Pin|ROAD1_1_Pin|ROAD2_0_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -258,7 +257,9 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-
+	timer_run(0);
+	timer_run(1);
+	timer_run(2);
 }
 /* USER CODE END 4 */
 
