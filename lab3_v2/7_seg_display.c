@@ -17,14 +17,17 @@ static uint8_t displayData[10] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D
 //this function display value on a 7-seg LED
 void display7SEG(int value) {
 	uint8_t temp = displayData[value];
+	int turnOnGroup = 0, turnOffGroup = 0;
 	for(int i = 0; i < 7; i++) {
 		if (temp % 2 == 1) {
-			HAL_GPIO_WritePin(PORT_USED_DISPLAY, START_PIN << i, TURN_ON_SEGMENT);
+			turnOnGroup = turnOnGroup | START_PIN << i;
 		} else {
-			HAL_GPIO_WritePin(PORT_USED_DISPLAY, START_PIN << i, TURN_OFF_SEGMENT);
+			turnOffGroup = turnOffGroup | START_PIN << i;
 		}
 		temp = temp >> 1;
 	}
+	HAL_GPIO_WritePin(PORT_USED_DISPLAY, turnOnGroup, TURN_ON_SEGMENT);
+	HAL_GPIO_WritePin(PORT_USED_DISPLAY, turnOffGroup, TURN_OFF_SEGMENT);
 }
 
 //this function choose a 7-seg LED among multiple LED to turn on.
