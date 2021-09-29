@@ -30,9 +30,11 @@ void display7SEG(int value) {
 //this function choose a 7-seg LED among multiple LED to turn on.
 void scanLED() {
 	//turn off all LED
+	int group = START_ENABLE_PIN;
 	for(int i = 0; i < NO_OF_LED7; i++) {
-		HAL_GPIO_WritePin(PORT_ENABLE, START_ENABLE_PIN << i, DISABLE_LED);
+		group = group | (START_ENABLE_PIN << i);
 	}
+	HAL_GPIO_WritePin(PORT_ENABLE, group, DISABLE_LED);
 	//update LED value
 	display7SEG(Led7Buffer[currentLED]);
 	//turn that LED on
